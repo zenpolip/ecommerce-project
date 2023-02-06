@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { client, urlFor } from '../../lib/client';
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineStar, AiFillStar } from 'react-icons/ai';
+import { useRouter } from 'next/router';
 import { Product } from '../../components';
 import { useStateContext } from '../../context/StateContext';
 
@@ -8,12 +9,15 @@ const ProductDetails = ({ product, products }) => {
     const { image, name, details, price } = product;
 
     const [index, setIndex] = useState(0);
-    const { incQty, decQty, qty, onAdd, setShowCart } = useStateContext();
+    const { incQty, decQty, qty, setQty, onAdd, setShowCart } = useStateContext();
 
     const handleBuyNow = () => {
         onAdd(product, qty);
         setShowCart(true);
     };
+
+    const dynamicRoute = useRouter().asPath;
+    useEffect(() => setQty(1), [dynamicRoute]);
 
     return (
         <div>
